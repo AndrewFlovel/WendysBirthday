@@ -41,14 +41,30 @@ export const VideoMessageWall: React.FC<VideoMessageWallProps> = ({
           </p>
         </div>
 
-        {/* Botón para que amigos y familiares suban su video */}
-        <button
-          onClick={onOpenUpload}
-          className="flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl font-bold text-sm bg-gradient-to-r from-sky-400 via-pink-500 to-yellow-400 hover:from-sky-500 hover:via-pink-600 hover:to-yellow-500 text-white shadow-xl shadow-pink-500/20 hover:scale-105 transition-all self-start md:self-auto"
-        >
-          <Plus className="w-5 h-5" />
-          <span>¡Subir o Grabar tu Video para Wendy! 🎥</span>
-        </button>
+        {/* Botones de acción */}
+        <div className="flex flex-wrap items-center gap-3 self-start md:self-auto">
+          <button
+            onClick={() => {
+              const shareUrl = `${window.location.origin}/?subir=video`;
+              const text = `¡Hola! Estamos reuniendo videos y saludos sorpresa para el cumpleaños de Sussan Wendy Molina Guzman 🎂✨ Sube tu felicitación aquí: ${shareUrl}`;
+              if (navigator.clipboard) {
+                navigator.clipboard.writeText(text);
+                alert('¡Enlace copiado al portapapeles! Listo para enviar a amigos y familiares 📲');
+              }
+            }}
+            className="flex items-center justify-center gap-1.5 px-4 py-3 rounded-2xl font-semibold text-xs glass-panel hover:bg-white/20 text-sky-200 border border-sky-400/40 shadow-lg hover:scale-105 transition-all"
+          >
+            <span>📲 Copiar Enlace para Amigos</span>
+          </button>
+
+          <button
+            onClick={onOpenUpload}
+            className="flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl font-bold text-sm bg-gradient-to-r from-sky-400 via-pink-500 to-yellow-400 hover:from-sky-500 hover:via-pink-600 hover:to-yellow-500 text-white shadow-xl shadow-pink-500/20 hover:scale-105 transition-all"
+          >
+            <Plus className="w-5 h-5" />
+            <span>¡Subir o Grabar Video! 🎥</span>
+          </button>
+        </div>
       </div>
 
       {/* Galería de Videos */}

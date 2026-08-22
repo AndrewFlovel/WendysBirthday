@@ -76,6 +76,21 @@ export const App: React.FC = () => {
       } catch (err) {
         console.warn('Error cargando deseos:', err);
       }
+
+      // 4. Detectar si viene con parámetro para subir video o dejar deseo
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('subir') === 'video' || params.get('upload') === 'video' || params.get('video') === '1') {
+        setIsVideoUploadOpen(true);
+        setTimeout(() => {
+          const el = document.getElementById('seccion-videos');
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }, 500);
+      } else if (params.get('deseo') === '1') {
+        setTimeout(() => {
+          const el = document.getElementById('seccion-deseos');
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }, 500);
+      }
     };
 
     initData();
