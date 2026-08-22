@@ -1,0 +1,98 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311042 100%);
+    color: #f8fafc;
+    min-height: 100vh;
+    font-family: 'Outfit', sans-serif;
+  }
+}
+
+/* Tipografía brillante y resplandeciente para Sussan Wendy Molina Guzman */
+.glow-wendy-name {
+  font-family: 'Dancing Script', cursive;
+  background: linear-gradient(135deg, #fbcfe8 0%, #fde047 35%, #7dd3fc 70%, #f472b6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 18px rgba(244, 114, 182, 0.75)) drop-shadow(0 0 35px rgba(56, 189, 248, 0.6));
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.glow-title-secondary {
+  font-family: 'Playfair Display', serif;
+  text-shadow: 0 0 15px rgba(253, 224, 71, 0.6), 0 0 30px rgba(244, 114, 182, 0.4);
+}
+
+/* Cajas de regalo 3D */
+.gift-perspective {
+  perspective: 1000px;
+}
+
+.gift-box-card {
+  transform-style: preserve-3d;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
+}
+
+.gift-box-card:hover {
+  transform: translateY(-10px) scale(1.03) rotateY(4deg);
+}
+
+/* Efectos de cinta brillante */
+.ribbon-shine {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.8) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 200% 100%;
+  animation: ribbon-shimmer 2.5s infinite linear;
+}
+
+@keyframes ribbon-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Barra de desplazamiento personalizada */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.8);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #f472b6, #38bdf8, #fde047);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #ec4899, #0284c7, #eab308);
+}
+
+/* Tarjeta Glassmorphism */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.glass-panel-light {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(244, 114, 182, 0.25);
+  box-shadow: 0 12px 40px 0 rgba(244, 114, 182, 0.2);
+}
