@@ -109,39 +109,39 @@ export const HomePage: React.FC<HomePageProps> = ({
       />
 
       {/* Banner Destacado hacia la Página de Amigos & Familia */}
-      <div className="max-w-4xl mx-auto px-4 w-full mb-4">
+      <div className="max-w-4xl mx-auto px-2 sm:px-4 w-full mb-2 sm:mb-4">
         <Link
           to="/amigos&familia"
-          className="group block p-4 sm:p-5 rounded-3xl bg-gradient-to-r from-sky-500/20 via-pink-500/20 to-yellow-400/20 border-2 border-pink-400/50 hover:border-yellow-300 backdrop-blur-md shadow-2xl transition-all duration-300 hover:scale-[1.02]"
+          className="group block p-3 sm:p-4 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-sky-500/20 via-pink-500/20 to-yellow-400/20 border border-pink-400/50 hover:border-yellow-300 backdrop-blur-md shadow-lg transition-all duration-300 hover:scale-[1.01]"
         >
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-            <div className="flex items-center gap-3.5">
-              <span className="p-3 rounded-2xl bg-gradient-to-tr from-pink-500 to-yellow-400 text-white shadow-lg group-hover:rotate-6 transition-transform">
-                <Video className="w-6 h-6" />
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+            <div className="flex items-center gap-3">
+              <span className="p-2 sm:p-2.5 rounded-xl bg-gradient-to-tr from-pink-500 to-yellow-400 text-white shadow-md group-hover:rotate-6 transition-transform shrink-0">
+                <Video className="w-5 h-5" />
               </span>
               <div>
-                <span className="text-xs uppercase tracking-widest font-bold text-yellow-300 flex items-center justify-center sm:justify-start gap-1">
-                  <Sparkles className="w-3.5 h-3.5" /> Página Exclusiva para Amigos y Familia
+                <span className="text-[10px] sm:text-xs uppercase tracking-wider font-bold text-yellow-300 flex items-center justify-center sm:justify-start gap-1">
+                  <Sparkles className="w-3 h-3" /> Exclusivo para Amigos y Familiares
                 </span>
-                <h3 className="text-base sm:text-lg font-bold text-white group-hover:text-pink-200 transition-colors">
+                <h3 className="text-xs sm:text-base font-bold text-white group-hover:text-pink-200 transition-colors">
                   ¿Quieres dejar tu felicitación o video para Wendy?
                 </h3>
-                <p className="text-xs text-slate-300">
-                  Visita <strong className="text-sky-300 underline font-mono">/amigos&familia</strong> para grabar tu mensaje antes de la fiesta.
+                <p className="text-[11px] sm:text-xs text-slate-300">
+                  Visita <strong className="text-sky-300 font-mono">/amigos&familia</strong> para enviar tu saludo sorpresa.
                 </p>
               </div>
             </div>
 
-            <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white text-slate-900 font-bold text-xs shadow-lg group-hover:bg-yellow-300 transition-colors shrink-0">
+            <span className="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-full bg-white text-slate-900 font-bold text-xs shadow-md group-hover:bg-yellow-300 transition-colors shrink-0">
               <span>Ir al Portal</span>
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-3.5 h-3.5" />
             </span>
           </div>
         </Link>
       </div>
 
       {/* Sección de Cajas de Regalo Interactivas */}
-      <main className="flex-1 space-y-12">
+      <main className="flex-1 space-y-6 sm:space-y-10">
         <GiftGrid
           recuerdos={recuerdos}
           onOpenGift={handleOpenGift}
@@ -164,7 +164,7 @@ export const HomePage: React.FC<HomePageProps> = ({
       </main>
 
       {/* Pie de Página */}
-      <footer className="relative z-10 py-10 px-4 text-center border-t border-slate-800/80 bg-slate-950/60 backdrop-blur-md mt-16">
+      <footer className="relative z-10 py-6 sm:py-8 px-4 text-center border-t border-slate-800/80 bg-slate-950/60 backdrop-blur-md mt-8 sm:mt-12">
         <div className="max-w-2xl mx-auto space-y-3">
           <div className="flex items-center justify-center gap-2 text-pink-400">
             <Heart className="w-5 h-5 fill-pink-400 animate-pulse" />

@@ -3,11 +3,27 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
   body {
     background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311042 100%);
     color: #f8fafc;
     min-height: 100vh;
     font-family: 'Outfit', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* Prevenir zoom automático molesto en iOS al hacer foco en inputs */
+  input, select, textarea {
+    font-size: 16px;
+  }
+  @media (min-width: 640px) {
+    input, select, textarea {
+      font-size: 14px;
+    }
   }
 }
 
@@ -17,13 +33,13 @@
   background: linear-gradient(135deg, #fbcfe8 0%, #fde047 35%, #7dd3fc 70%, #f472b6 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 18px rgba(244, 114, 182, 0.75)) drop-shadow(0 0 35px rgba(56, 189, 248, 0.6));
+  filter: drop-shadow(0 0 12px rgba(244, 114, 182, 0.7)) drop-shadow(0 0 24px rgba(56, 189, 248, 0.5));
   animation: pulse-glow 3s ease-in-out infinite;
 }
 
 .glow-title-secondary {
   font-family: 'Playfair Display', serif;
-  text-shadow: 0 0 15px rgba(253, 224, 71, 0.6), 0 0 30px rgba(244, 114, 182, 0.4);
+  text-shadow: 0 0 12px rgba(253, 224, 71, 0.6), 0 0 24px rgba(244, 114, 182, 0.4);
 }
 
 /* Cajas de regalo 3D */
@@ -37,7 +53,7 @@
 }
 
 .gift-box-card:hover {
-  transform: translateY(-10px) scale(1.03) rotateY(4deg);
+  transform: translateY(-8px) scale(1.02) rotateY(3deg);
 }
 
 /* Efectos de cinta brillante */
@@ -63,8 +79,8 @@
 
 /* Barra de desplazamiento personalizada */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -85,8 +101,8 @@
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
 }
 
 .glass-panel-light {
