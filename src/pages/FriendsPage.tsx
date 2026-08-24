@@ -14,10 +14,10 @@ import {
   Music,
   VolumeX,
   Image as ImageIcon,
-  HeartHandshake,
   Gift,
   Heart,
-  MessageCircleHeart
+  MessageCircleHeart,
+  ArrowRight
 } from 'lucide-react';
 import { MensajeVideo, DeseoCumple, Recuerdo } from '../types';
 import {
@@ -85,7 +85,6 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
   const [colorCaja, setColorCaja] = useState<'rosa' | 'celeste' | 'amarillo'>('rosa');
   const [fotoFile, setFotoFile] = useState<File | null>(null);
   const [fotoPreviewUrl, setFotoPreviewUrl] = useState<string>('');
-  const [fotoUrlInput, setFotoUrlInput] = useState('');
 
   // Estados de Dedicatoria / Deseo
   const [selectedSticker, setSelectedSticker] = useState('💖');
@@ -129,7 +128,7 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
         liveVideoRef.current.play();
       }
     } catch {
-      setErrorMsg('No se pudo acceder a la cámara o micrófono. Asegúrate de otorgar los permisos necesarios.');
+      setErrorMsg('No se pudo acceder a la cámara o micrófono. Asegúrate de otorgar los permisos en tu navegador.');
     }
   };
 
@@ -258,9 +257,8 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
 
         onVideoUploaded(resultVideo);
       } else if (tipoContribucion === 'momento') {
-        const finalUrl = fotoPreviewUrl || fotoUrlInput.trim();
-        if (!finalUrl && !fotoFile) {
-          setErrorMsg('Por favor sube una fotografía del momento o escribe el enlace.');
+        if (!fotoPreviewUrl && !fotoFile) {
+          setErrorMsg('Por favor sube una fotografía del momento.');
           setIsUploading(false);
           return;
         }
@@ -274,7 +272,7 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
             mensajeEmotivo: mensaje.trim() || '¡Que la vida nos siga regalando instantes mágicos juntos!',
             colorCaja,
             imageFile: fotoFile || undefined,
-            imageUrl: finalUrl,
+            imageUrl: fotoPreviewUrl,
           },
           (progress) => setUploadProgress(progress)
         );
@@ -307,7 +305,7 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
       setIsUploading(false);
     } catch {
       setIsUploading(false);
-      setErrorMsg('Hubo un problema al guardar tu felicitación. Inténtalo de nuevo.');
+      setErrorMsg('Hubo un problema al guardar tu sorpresa. Por favor inténtalo de nuevo.');
     }
   };
 
@@ -318,7 +316,6 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
     setVideoPreviewUrl(null);
     setFotoFile(null);
     setFotoPreviewUrl('');
-    setFotoUrlInput('');
     setTituloMomento('');
     setActiveVideoTab('archivo');
   };
@@ -336,13 +333,13 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
   };
 
   return (
-    <div className="min-h-screen py-3 px-3 sm:py-6 sm:px-4 max-w-3xl mx-auto flex flex-col justify-between">
+    <div className="min-h-screen py-3 px-3 sm:py-6 sm:px-4 max-w-4xl mx-auto flex flex-col justify-between">
       {/* Barra superior limpia y compacta */}
       <header className="flex items-center justify-between gap-2 pb-3 sm:pb-4 border-b border-slate-800/80">
         <div className="flex items-center gap-1.5">
           <PartyPopper className="w-4 h-4 text-yellow-300 animate-bounce" />
           <span className="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-sky-200">
-            Sorpresa de Cumpleaños
+            Portal Sorpresa de Cumpleaños
           </span>
         </div>
 
@@ -374,14 +371,14 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
       </header>
 
       {/* Contenedor Central */}
-      <main className="my-3 sm:my-6">
+      <main className="my-3 sm:my-6 space-y-4 sm:space-y-6">
         {!isSubmitted ? (
-          <div className="space-y-3 sm:space-y-5">
-            {/* Encabezado */}
+          <>
+            {/* Encabezado Principal */}
             <div className="text-center max-w-xl mx-auto space-y-1.5">
               <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-pink-500/20 border border-pink-400/40 text-pink-200 text-[11px] sm:text-xs font-semibold">
                 <Sparkles className="w-3.5 h-3.5 text-yellow-300 animate-spin" style={{ animationDuration: '4s' }} />
-                <span>🤫 ¡Misión Sorpresa Secreta!</span>
+                <span>🤫 ¡Misión Sorpresa Confidencial!</span>
               </div>
 
               <h1 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-white leading-tight">
@@ -390,216 +387,294 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
               </h1>
 
               <p className="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-md mx-auto">
-                Elige qué te gustaría regalarle: un saludo en video, una fotografía de un momento especial o una hermosa dedicatoria escrita.
+                Todo se mantendrá en secreto hasta el día de su fiesta. Elige cómo deseas felicitarla a continuación:
               </p>
             </div>
 
-            {/* SELECTOR PRINCIPAL DE CONTRIBUCIÓN (Tabs: Video / Momento / Dedicatoria) */}
-            <div className="grid grid-cols-3 gap-1.5 p-1.5 bg-slate-900/90 border border-slate-800 rounded-2xl max-w-xl mx-auto shadow-lg">
-              <button
-                type="button"
-                onClick={() => {
-                  setTipoContribucion('video');
-                  stopCamera();
-                }}
-                className={`py-2.5 px-2 rounded-xl text-xs sm:text-sm font-bold flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 transition-all min-h-[46px] ${
-                  tipoContribucion === 'video'
-                    ? 'bg-gradient-to-r from-sky-500 to-cyan-500 text-white shadow-md'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
-                }`}
-              >
-                <Video className="w-4 h-4 shrink-0" />
-                <span>Video Saludo</span>
-              </button>
+            {/* ================= PASO 1: SELECTOR DE TIPO DE REGALO (TARJETAS GRANDES DESTACADAS) ================= */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between px-1">
+                <span className="text-xs font-bold uppercase tracking-wider text-yellow-300 flex items-center gap-1.5">
+                  <span className="w-5 h-5 rounded-full bg-yellow-400 text-slate-950 flex items-center justify-center text-[11px] font-black">1</span>
+                  <span>Elige el tipo de felicitación que deseas dejar:</span>
+                </span>
+              </div>
 
-              <button
-                type="button"
-                onClick={() => {
-                  setTipoContribucion('momento');
-                  stopCamera();
-                }}
-                className={`py-2.5 px-2 rounded-xl text-xs sm:text-sm font-bold flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 transition-all min-h-[46px] ${
-                  tipoContribucion === 'momento'
-                    ? 'bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-md'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
-                }`}
-              >
-                <Gift className="w-4 h-4 shrink-0" />
-                <span>Momento / Foto</span>
-              </button>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                {/* 1. Opción Video Saludo */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setTipoContribucion('video');
+                    stopCamera();
+                  }}
+                  className={`p-3.5 sm:p-4 rounded-2xl text-left transition-all duration-300 relative border-2 flex flex-col justify-between ${
+                    tipoContribucion === 'video'
+                      ? 'bg-gradient-to-br from-sky-900/60 to-cyan-900/40 border-sky-400 shadow-xl shadow-sky-500/20 scale-[1.02] ring-2 ring-sky-300/50'
+                      : 'bg-slate-900/80 border-slate-800 hover:border-slate-700 hover:bg-slate-800/60'
+                  }`}
+                >
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <div className={`p-2.5 rounded-xl ${tipoContribucion === 'video' ? 'bg-sky-500 text-white shadow-md' : 'bg-slate-800 text-sky-400'}`}>
+                      <Video className="w-5 h-5" />
+                    </div>
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-sky-500/20 text-sky-200 border border-sky-400/30">
+                      Video 🎥
+                    </span>
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-bold text-white mb-0.5">Video Saludo</h3>
+                    <p className="text-[11px] text-slate-300 leading-tight">
+                      Sube un archivo o grábate en vivo con tu cámara.
+                    </p>
+                  </div>
+                  {tipoContribucion === 'video' && (
+                    <div className="mt-2 flex items-center gap-1 text-[11px] font-bold text-sky-300">
+                      <CheckCircle2 className="w-3.5 h-3.5" />
+                      <span>Seleccionado</span>
+                    </div>
+                  )}
+                </button>
 
-              <button
-                type="button"
-                onClick={() => {
-                  setTipoContribucion('dedicatoria');
-                  stopCamera();
-                }}
-                className={`py-2.5 px-2 rounded-xl text-xs sm:text-sm font-bold flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 transition-all min-h-[46px] ${
-                  tipoContribucion === 'dedicatoria'
-                    ? 'bg-gradient-to-r from-yellow-400 to-amber-500 text-slate-950 shadow-md'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
-                }`}
-              >
-                <MessageCircleHeart className="w-4 h-4 shrink-0" />
-                <span>Dedicatoria</span>
-              </button>
+                {/* 2. Opción Momento / Foto */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setTipoContribucion('momento');
+                    stopCamera();
+                  }}
+                  className={`p-3.5 sm:p-4 rounded-2xl text-left transition-all duration-300 relative border-2 flex flex-col justify-between ${
+                    tipoContribucion === 'momento'
+                      ? 'bg-gradient-to-br from-pink-900/60 to-rose-900/40 border-pink-400 shadow-xl shadow-pink-500/20 scale-[1.02] ring-2 ring-pink-300/50'
+                      : 'bg-slate-900/80 border-slate-800 hover:border-slate-700 hover:bg-slate-800/60'
+                  }`}
+                >
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <div className={`p-2.5 rounded-xl ${tipoContribucion === 'momento' ? 'bg-pink-500 text-white shadow-md' : 'bg-slate-800 text-pink-400'}`}>
+                      <Gift className="w-5 h-5" />
+                    </div>
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-pink-500/20 text-pink-200 border border-pink-400/30">
+                      Caja de Regalo 🎁
+                    </span>
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-bold text-white mb-0.5">Momento / Foto</h3>
+                    <p className="text-[11px] text-slate-300 leading-tight">
+                      Sube una fotografía y crea una caja mágica para Wendy.
+                    </p>
+                  </div>
+                  {tipoContribucion === 'momento' && (
+                    <div className="mt-2 flex items-center gap-1 text-[11px] font-bold text-pink-300">
+                      <CheckCircle2 className="w-3.5 h-3.5" />
+                      <span>Seleccionado</span>
+                    </div>
+                  )}
+                </button>
+
+                {/* 3. Opción Dedicatoria / Deseo */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setTipoContribucion('dedicatoria');
+                    stopCamera();
+                  }}
+                  className={`p-3.5 sm:p-4 rounded-2xl text-left transition-all duration-300 relative border-2 flex flex-col justify-between ${
+                    tipoContribucion === 'dedicatoria'
+                      ? 'bg-gradient-to-br from-yellow-900/60 to-amber-900/40 border-yellow-400 shadow-xl shadow-yellow-500/20 scale-[1.02] ring-2 ring-yellow-300/50'
+                      : 'bg-slate-900/80 border-slate-800 hover:border-slate-700 hover:bg-slate-800/60'
+                  }`}
+                >
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <div className={`p-2.5 rounded-xl ${tipoContribucion === 'dedicatoria' ? 'bg-yellow-400 text-slate-950 shadow-md' : 'bg-slate-800 text-yellow-400'}`}>
+                      <MessageCircleHeart className="w-5 h-5" />
+                    </div>
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-yellow-500/20 text-yellow-200 border border-yellow-400/30">
+                      Pozo de Deseos ✨
+                    </span>
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-bold text-white mb-0.5">Dedicatoria Escrita</h3>
+                    <p className="text-[11px] text-slate-300 leading-tight">
+                      Dedica hermosas palabras con stickers decorativos.
+                    </p>
+                  </div>
+                  {tipoContribucion === 'dedicatoria' && (
+                    <div className="mt-2 flex items-center gap-1 text-[11px] font-bold text-yellow-300">
+                      <CheckCircle2 className="w-3.5 h-3.5" />
+                      <span>Seleccionado</span>
+                    </div>
+                  )}
+                </button>
+              </div>
             </div>
 
-            {/* Tarjeta del Formulario Dinámico */}
-            <div className="glass-panel rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-sky-400/40 shadow-xl relative overflow-hidden">
-              <div className="absolute -top-10 -right-10 w-32 h-32 bg-pink-500/15 rounded-full blur-2xl pointer-events-none" />
-              <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-yellow-400/15 rounded-full blur-2xl pointer-events-none" />
+            {/* ================= PASO 2: FORMULARIO DINÁMICO ================= */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between px-1">
+                <span className="text-xs font-bold uppercase tracking-wider text-yellow-300 flex items-center gap-1.5">
+                  <span className="w-5 h-5 rounded-full bg-yellow-400 text-slate-950 flex items-center justify-center text-[11px] font-black">2</span>
+                  <span>
+                    {tipoContribucion === 'video' && 'Completa tu saludo en video:'}
+                    {tipoContribucion === 'momento' && 'Detalles de la fotografía y caja de regalo:'}
+                    {tipoContribucion === 'dedicatoria' && 'Escribe tu dedicatoria especial:'}
+                  </span>
+                </span>
+              </div>
 
-              <form onSubmit={handleSubmit} className="space-y-3.5 sm:space-y-4">
-                {errorMsg && (
-                  <div className="flex items-center gap-2 p-2.5 rounded-xl bg-red-500/20 border border-red-500/50 text-red-200 text-xs">
-                    <AlertCircle className="w-4 h-4 shrink-0" />
-                    <span>{errorMsg}</span>
-                  </div>
-                )}
+              <div className="glass-panel rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-sky-400/40 shadow-xl relative overflow-hidden">
+                <div className="absolute -top-10 -right-10 w-32 h-32 bg-pink-500/15 rounded-full blur-2xl pointer-events-none" />
+                <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-yellow-400/15 rounded-full blur-2xl pointer-events-none" />
 
-                {/* Campos Comunes: Nombre y Parentesco */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs font-bold text-sky-200 mb-1">
-                      Tu Nombre Completo <span className="text-pink-400">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={autor}
-                      onChange={(e) => setAutor(e.target.value)}
-                      placeholder="Ej. Sofía Mendoza"
-                      className="w-full px-3.5 py-2.5 text-base sm:text-sm rounded-xl bg-slate-800/90 border border-slate-700 focus:border-sky-400 focus:outline-none text-white placeholder-slate-500 shadow-inner"
-                    />
-                  </div>
+                <form onSubmit={handleSubmit} className="space-y-3.5 sm:space-y-4">
+                  {errorMsg && (
+                    <div className="flex items-center gap-2 p-2.5 rounded-xl bg-red-500/20 border border-red-500/50 text-red-200 text-xs">
+                      <AlertCircle className="w-4 h-4 shrink-0" />
+                      <span>{errorMsg}</span>
+                    </div>
+                  )}
 
-                  <div>
-                    <label className="block text-xs font-bold text-sky-200 mb-1">
-                      ¿Qué eres de Wendy?
-                    </label>
-                    <select
-                      value={parentesco}
-                      onChange={(e) => setParentesco(e.target.value)}
-                      className="w-full px-3.5 py-2.5 text-base sm:text-sm rounded-xl bg-slate-800/90 border border-slate-700 focus:border-sky-400 focus:outline-none text-white shadow-inner"
-                    >
-                      {parentescoOptions.map((opt) => (
-                        <option key={opt} value={opt}>
-                          {opt}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
-                {/* ================= SECCIÓN 1: VIDEO SALUDO ================= */}
-                {tipoContribucion === 'video' && (
-                  <>
+                  {/* Campos Comunes: Nombre y Parentesco */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-xs font-bold text-pink-200 mb-1">
-                        Tu Dedicatoria Escrita (Opcional)
+                      <label className="block text-xs font-bold text-sky-200 mb-1">
+                        Tu Nombre Completo <span className="text-pink-400">*</span>
                       </label>
-                      <textarea
-                        rows={2}
-                        value={mensaje}
-                        onChange={(e) => setMensaje(e.target.value)}
-                        placeholder="¡Wendy hermosa, te deseo el mejor cumpleaños del mundo!..."
-                        className="w-full px-3.5 py-2 text-base sm:text-sm rounded-xl bg-slate-800/90 border border-slate-700 focus:border-pink-400 focus:outline-none text-white placeholder-slate-500 resize-none shadow-inner"
+                      <input
+                        type="text"
+                        required
+                        value={autor}
+                        onChange={(e) => setAutor(e.target.value)}
+                        placeholder="Ej. Sofía Mendoza"
+                        className="w-full px-3.5 py-2.5 text-base sm:text-sm rounded-xl bg-slate-800/90 border border-slate-700 focus:border-sky-400 focus:outline-none text-white placeholder-slate-500 shadow-inner"
                       />
                     </div>
 
-                    {/* Selector de Método de Video */}
-                    <div className="flex border border-slate-700 bg-slate-950/80 rounded-xl p-1">
-                      <button
-                        type="button"
-                        onClick={() => handleVideoTabChange('archivo')}
-                        className={`flex-1 py-2 px-2 text-xs font-semibold rounded-lg min-h-[40px] flex items-center justify-center gap-1.5 transition-all ${
-                          activeVideoTab === 'archivo'
-                            ? 'bg-gradient-to-r from-sky-500 to-cyan-500 text-white shadow-md'
-                            : 'text-slate-400 hover:text-slate-200'
-                        }`}
+                    <div>
+                      <label className="block text-xs font-bold text-sky-200 mb-1">
+                        ¿Qué eres de Wendy?
+                      </label>
+                      <select
+                        value={parentesco}
+                        onChange={(e) => setParentesco(e.target.value)}
+                        className="w-full px-3.5 py-2.5 text-base sm:text-sm rounded-xl bg-slate-800/90 border border-slate-700 focus:border-sky-400 focus:outline-none text-white shadow-inner"
                       >
-                        <Upload className="w-3.5 h-3.5" />
-                        <span>Subir Archivo</span>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => handleVideoTabChange('grabar')}
-                        className={`flex-1 py-2 px-2 text-xs font-semibold rounded-lg min-h-[40px] flex items-center justify-center gap-1.5 transition-all ${
-                          activeVideoTab === 'grabar'
-                            ? 'bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-md'
-                            : 'text-slate-400 hover:text-slate-200'
-                        }`}
-                      >
-                        <Camera className="w-3.5 h-3.5" />
-                        <span>Grabar en Vivo</span>
-                      </button>
+                        {parentescoOptions.map((opt) => (
+                          <option key={opt} value={opt}>
+                            {opt}
+                          </option>
+                        ))}
+                      </select>
                     </div>
+                  </div>
 
-                    {/* Área de Grabación o Subida */}
-                    <div className="rounded-xl border border-dashed border-slate-700 p-3 sm:p-4 bg-slate-950/60 text-center">
-                      {activeVideoTab === 'archivo' && (
-                        <div>
-                          {!videoPreviewUrl ? (
-                            <label className="flex flex-col items-center justify-center cursor-pointer py-4 group">
-                              <Upload className="w-8 h-8 text-sky-400 group-hover:scale-110 transition-transform mb-1.5" />
-                              <span className="text-xs sm:text-sm font-bold text-slate-200">
-                                Toca aquí para seleccionar tu video
-                              </span>
-                              <span className="text-[11px] text-slate-400 mt-0.5">
-                                Formatos: MP4, WebM, MOV
-                              </span>
-                              <input
-                                type="file"
-                                accept="video/*"
-                                onChange={handleVideoFileChange}
-                                className="hidden"
-                              />
-                            </label>
-                          ) : (
-                            <div className="space-y-2">
-                              <video
-                                src={videoPreviewUrl}
-                                controls
-                                className="w-full max-h-48 sm:max-h-56 rounded-xl bg-black mx-auto shadow-md"
-                              />
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  setVideoFile(null);
-                                  setVideoPreviewUrl(null);
-                                }}
-                                className="text-xs text-pink-400 hover:text-pink-300 underline"
-                              >
-                                Elegir otro video
-                              </button>
-                            </div>
-                          )}
-                        </div>
-                      )}
+                  {/* ================= FORMULARIO 1: VIDEO SALUDO ================= */}
+                  {tipoContribucion === 'video' && (
+                    <>
+                      <div>
+                        <label className="block text-xs font-bold text-pink-200 mb-1">
+                          Tu Dedicatoria Escrita (Opcional)
+                        </label>
+                        <textarea
+                          rows={2}
+                          value={mensaje}
+                          onChange={(e) => setMensaje(e.target.value)}
+                          placeholder="¡Wendy hermosa, te deseo el mejor cumpleaños del mundo!..."
+                          className="w-full px-3.5 py-2 text-base sm:text-sm rounded-xl bg-slate-800/90 border border-slate-700 focus:border-pink-400 focus:outline-none text-white placeholder-slate-500 resize-none shadow-inner"
+                        />
+                      </div>
 
-                      {activeVideoTab === 'grabar' && (
-                        <div>
-                          {!videoPreviewUrl ? (
-                            <div className="space-y-3">
-                              <div className="relative w-full max-h-48 sm:max-h-56 rounded-xl bg-black overflow-hidden mx-auto flex items-center justify-center shadow-lg">
-                                <video
-                                  ref={liveVideoRef}
-                                  autoPlay
-                                  muted
-                                  playsInline
-                                  className="w-full h-44 sm:h-52 object-cover"
+                      {/* Selector de Método de Video */}
+                      <div className="flex border border-slate-700 bg-slate-950/80 rounded-xl p-1">
+                        <button
+                          type="button"
+                          onClick={() => handleVideoTabChange('archivo')}
+                          className={`flex-1 py-2 px-2 text-xs font-semibold rounded-lg min-h-[40px] flex items-center justify-center gap-1.5 transition-all ${
+                            activeVideoTab === 'archivo'
+                              ? 'bg-gradient-to-r from-sky-500 to-cyan-500 text-white shadow-md'
+                              : 'text-slate-400 hover:text-slate-200'
+                          }`}
+                        >
+                          <Upload className="w-3.5 h-3.5" />
+                          <span>Subir Archivo de Video</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => handleVideoTabChange('grabar')}
+                          className={`flex-1 py-2 px-2 text-xs font-semibold rounded-lg min-h-[40px] flex items-center justify-center gap-1.5 transition-all ${
+                            activeVideoTab === 'grabar'
+                              ? 'bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-md'
+                              : 'text-slate-400 hover:text-slate-200'
+                          }`}
+                        >
+                          <Camera className="w-3.5 h-3.5" />
+                          <span>Grabar con Cámara en Vivo</span>
+                        </button>
+                      </div>
+
+                      {/* Área de Grabación o Subida */}
+                      <div className="rounded-xl border border-dashed border-slate-700 p-3 sm:p-4 bg-slate-950/60 text-center">
+                        {activeVideoTab === 'archivo' && (
+                          <div>
+                            {!videoPreviewUrl ? (
+                              <label className="flex flex-col items-center justify-center cursor-pointer py-4 group">
+                                <Upload className="w-8 h-8 text-sky-400 group-hover:scale-110 transition-transform mb-1.5" />
+                                <span className="text-xs sm:text-sm font-bold text-slate-200">
+                                  Toca aquí para seleccionar tu video
+                                </span>
+                                <span className="text-[11px] text-slate-400 mt-0.5">
+                                  Formatos: MP4, WebM, MOV
+                                </span>
+                                <input
+                                  type="file"
+                                  accept="video/*"
+                                  onChange={handleVideoFileChange}
+                                  className="hidden"
                                 />
-                                {isRecording && (
-                                  <div className="absolute top-2 right-2 flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-red-600 text-white text-[11px] font-bold animate-pulse shadow-md">
-                                    <span className="w-2 h-2 rounded-full bg-white animate-ping" />
-                                    <span>REC {recordingTime}s</span>
-                                  </div>
-                                )}
+                              </label>
+                            ) : (
+                              <div className="space-y-2">
+                                <video
+                                  src={videoPreviewUrl}
+                                  controls
+                                  className="w-full max-h-48 sm:max-h-56 rounded-xl bg-black mx-auto shadow-md"
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setVideoFile(null);
+                                    setVideoPreviewUrl(null);
+                                  }}
+                                  className="text-xs text-pink-400 hover:text-pink-300 underline"
+                                >
+                                  Elegir otro video
+                                </button>
                               </div>
+                            )}
+                          </div>
+                        )}
 
-                              <div className="flex items-center justify-center gap-2">
+                        {activeVideoTab === 'grabar' && (
+                          <div>
+                            {!videoPreviewUrl ? (
+                              <div className="space-y-3">
+                                <div className="relative w-full max-h-48 sm:max-h-56 rounded-xl bg-black overflow-hidden mx-auto flex items-center justify-center shadow-lg">
+                                  <video
+                                    ref={liveVideoRef}
+                                    autoPlay
+                                    muted
+                                    playsInline
+                                    className="w-full h-44 sm:h-52 object-cover"
+                                  />
+                                  {isRecording && (
+                                    <div className="absolute top-2 right-2 flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-red-600 text-white text-[11px] font-bold animate-pulse shadow-md">
+                                      <span className="w-2 h-2 rounded-full bg-white animate-ping" />
+                                      <span>REC {recordingTime}s</span>
+                                    </div>
+                                  )}
+                                </div>
+
+                                <div className="flex items-center justify-center gap-2">
                                 {!isRecording ? (
                                   <button
                                     type="button"
@@ -648,7 +723,7 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
                   </>
                 )}
 
-                {/* ================= SECCIÓN 2: MOMENTO / FOTO ================= */}
+                {/* ================= FORMULARIO 2: MOMENTO / FOTO ================= */}
                 {tipoContribucion === 'momento' && (
                   <div className="space-y-3">
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
@@ -682,7 +757,7 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
 
                     <div>
                       <label className="block text-xs font-bold text-pink-200 mb-1">
-                        Color de la Caja de Regalo Mágica
+                        Color de la Caja de Regalo Mágica 3D
                       </label>
                       <div className="grid grid-cols-3 gap-2">
                         <button
@@ -690,7 +765,7 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
                           onClick={() => setColorCaja('rosa')}
                           className={`py-2 px-2 rounded-xl text-xs font-bold border transition-all ${
                             colorCaja === 'rosa'
-                              ? 'bg-pink-600 border-pink-300 text-white shadow-md'
+                              ? 'bg-pink-600 border-pink-300 text-white shadow-md ring-2 ring-pink-300'
                               : 'bg-slate-800 border-slate-700 text-slate-300'
                           }`}
                         >
@@ -701,7 +776,7 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
                           onClick={() => setColorCaja('celeste')}
                           className={`py-2 px-2 rounded-xl text-xs font-bold border transition-all ${
                             colorCaja === 'celeste'
-                              ? 'bg-sky-600 border-sky-300 text-white shadow-md'
+                              ? 'bg-sky-600 border-sky-300 text-white shadow-md ring-2 ring-sky-300'
                               : 'bg-slate-800 border-slate-700 text-slate-300'
                           }`}
                         >
@@ -712,7 +787,7 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
                           onClick={() => setColorCaja('amarillo')}
                           className={`py-2 px-2 rounded-xl text-xs font-bold border transition-all ${
                             colorCaja === 'amarillo'
-                              ? 'bg-amber-500 border-yellow-300 text-slate-950 shadow-md'
+                              ? 'bg-amber-500 border-yellow-300 text-slate-950 shadow-md ring-2 ring-yellow-300'
                               : 'bg-slate-800 border-slate-700 text-slate-300'
                           }`}
                         >
@@ -775,7 +850,7 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
                   </div>
                 )}
 
-                {/* ================= SECCIÓN 3: SOLO DEDICATORIA ================= */}
+                {/* ================= FORMULARIO 3: SOLO DEDICATORIA ================= */}
                 {tipoContribucion === 'dedicatoria' && (
                   <div className="space-y-3">
                     <div>
@@ -876,6 +951,7 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
               </form>
             </div>
           </div>
+        </>
         ) : (
           /* Pantalla de Agradecimiento y Confirmación Dinámica */
           <div className="max-w-md mx-auto glass-panel rounded-2xl sm:rounded-3xl p-6 sm:p-8 border border-pink-400/50 shadow-xl text-center space-y-4">
