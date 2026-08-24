@@ -45,16 +45,16 @@ export const VideoMessageWall: React.FC<VideoMessageWallProps> = ({
         <div className="flex flex-wrap items-center gap-3 self-start md:self-auto">
           <button
             onClick={() => {
-              const shareUrl = `${window.location.origin}/?subir=video`;
+              const shareUrl = `${window.location.origin}/amigos&familia`;
               const text = `¡Hola! Estamos reuniendo videos y saludos sorpresa para el cumpleaños de Sussan Wendy Molina Guzman 🎂✨ Sube tu felicitación aquí: ${shareUrl}`;
               if (navigator.clipboard) {
                 navigator.clipboard.writeText(text);
-                alert('¡Enlace copiado al portapapeles! Listo para enviar a amigos y familiares 📲');
+                alert('¡Enlace copiado al portapapeles! Listo para enviar a amigos y familiares: ' + shareUrl);
               }
             }}
             className="flex items-center justify-center gap-1.5 px-4 py-3 rounded-2xl font-semibold text-xs glass-panel hover:bg-white/20 text-sky-200 border border-sky-400/40 shadow-lg hover:scale-105 transition-all"
           >
-            <span>📲 Copiar Enlace para Amigos</span>
+            <span>📲 Copiar Enlace (/amigos&familia)</span>
           </button>
 
           <button

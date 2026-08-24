@@ -86,15 +86,15 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Botón Compartir Enlace con Amigos */}
           <button
             onClick={() => {
-              const shareUrl = `${window.location.origin}/?subir=video`;
+              const shareUrl = `${window.location.origin}/amigos&familia`;
               const text = `¡Hola! Estamos reuniendo videos y mensajes sorpresa para el cumpleaños de Sussan Wendy Molina Guzman 🎂✨ Sube tu felicitación aquí: ${shareUrl}`;
               if (navigator.clipboard) {
                 navigator.clipboard.writeText(text);
-                alert('¡Enlace y mensaje copiado al portapapeles! Listo para enviar por WhatsApp o redes a los amigos de Wendy 📲✨');
+                alert('¡Enlace copiado al portapapeles! Listo para enviar por WhatsApp: ' + shareUrl);
               }
             }}
             className="flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-semibold bg-gradient-to-r from-pink-500 to-sky-500 hover:from-pink-600 hover:to-sky-600 text-white shadow-md transition-all hover:scale-105"
-            title="Copiar enlace para pedir videos a amigos"
+            title="Copiar enlace de /amigos&familia para amigos"
           >
             <span>📲 Compartir con Amigos</span>
           </button>
