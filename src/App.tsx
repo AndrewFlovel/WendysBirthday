@@ -64,6 +64,10 @@ export const App: React.FC = () => {
     setDeseos((prev) => [nuevoDeseo, ...prev]);
   };
 
+  const handleAddMemory = (nuevoRecuerdo: Recuerdo) => {
+    setRecuerdos((prev) => [...prev, nuevoRecuerdo]);
+  };
+
   return (
     <BrowserRouter>
       <div className="relative min-h-screen selection:bg-pink-400 selection:text-white">
@@ -98,6 +102,7 @@ export const App: React.FC = () => {
               <FriendsPage
                 onVideoUploaded={handleVideoUploaded}
                 onAddWish={handleAddWish}
+                onAddMemory={handleAddMemory}
                 isMusicPlaying={isMusicPlaying}
                 onToggleMusic={handleToggleMusic}
               />
@@ -110,6 +115,7 @@ export const App: React.FC = () => {
               <FriendsPage
                 onVideoUploaded={handleVideoUploaded}
                 onAddWish={handleAddWish}
+                onAddMemory={handleAddMemory}
                 isMusicPlaying={isMusicPlaying}
                 onToggleMusic={handleToggleMusic}
               />
@@ -122,6 +128,7 @@ export const App: React.FC = () => {
               <FriendsPage
                 onVideoUploaded={handleVideoUploaded}
                 onAddWish={handleAddWish}
+                onAddMemory={handleAddMemory}
                 isMusicPlaying={isMusicPlaying}
                 onToggleMusic={handleToggleMusic}
               />
@@ -134,6 +141,7 @@ export const App: React.FC = () => {
               <FriendsPage
                 onVideoUploaded={handleVideoUploaded}
                 onAddWish={handleAddWish}
+                onAddMemory={handleAddMemory}
                 isMusicPlaying={isMusicPlaying}
                 onToggleMusic={handleToggleMusic}
               />
@@ -146,13 +154,14 @@ export const App: React.FC = () => {
               <FriendsPage
                 onVideoUploaded={handleVideoUploaded}
                 onAddWish={handleAddWish}
+                onAddMemory={handleAddMemory}
                 isMusicPlaying={isMusicPlaying}
                 onToggleMusic={handleToggleMusic}
               />
             }
           />
 
-          {/* Redirección por defecto */}
+          {/* Redirección por defecto a la página principal */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </div>

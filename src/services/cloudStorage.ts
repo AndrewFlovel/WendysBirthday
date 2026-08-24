@@ -1,10 +1,12 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { MensajeVideo, DeseoCumple, SupabaseConfig } from '../types';
+import { MensajeVideo, DeseoCumple, SupabaseConfig, Recuerdo } from '../types';
 import {
   saveLocalVideoMessage,
   getLocalVideoMessages,
   saveLocalWish,
-  getLocalWishes
+  getLocalWishes,
+  saveLocalMemories,
+  getLocalMemories
 } from './localDb';
 
 const SUPABASE_CONFIG_KEY = 'wendy_supabase_credentials';
@@ -252,6 +254,79 @@ export const fetchAllWishes = async (): Promise<DeseoCumple[]> => {
   }
 
   return localWishes;
+};
+
+// --- Subida de Momentos / Recuerdos Fotográficos ---
+export const uploadMemoryGreeting = async (
+  memoryData: {
+    autor: string;
+    titulo: string;
+    fecha: string;
+    descripcion: string;
+    mensajeEmotivo: string;
+    colorCaja: 'rosa' | 'celeste' | 'amarillo';
+    imageFile?: File | Blob;
+    imageUrl?: string;
+  },
+  onProgress?: (progress: number) => void
+): Promise<Recuerdo> => {
+  const client = getSupabaseClient();
+  const id = 'user-recuerdo-' + Date.now();
+  let finalImageUrl = memoryData.imageUrl || '';
+
+  if (client && memoryData.imageFile) {
+    try {
+      if (onProgress) onProgress(30);
+      const fileExt = memoryData.imageFile.type.split('/')[1] || 'jpg';
+      const filePath = `recuerdos/${id}.${fileExt}`;
+      const { error: uploadError } = await client.storage
+        .from('wendy_videos')
+        .upload(filePath, memoryData.imageFile, {
+          cacheControl: '3600',
+          upsert: true,
+        });
+
+      if (!uploadError) {
+        const { data: urlData } = client.storage
+          .from('wendy_videos')
+          .getPublicUrl(filePath);
+        finalImageUrl = urlData.publicUrl;
+      }
+    } catch (e) {
+      console.warn('Error subiendo imagen a Supabase:', e);
+    }
+  }
+
+  // Si no hay URL de nube y hay archivo, leer como DataURL
+  if (!finalImageUrl && memoryData.imageFile) {
+    finalImageUrl = await new Promise<string>((resolve) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve((reader.result as string) || '');
+      reader.onerror = () => resolve('');
+      reader.readAsDataURL(memoryData.imageFile as Blob);
+    });
+  }
+
+  const existing = await getLocalMemories();
+  const nuevoRecuerdo: Recuerdo = {
+    id,
+    order: existing.length + 1,
+    titulo: memoryData.titulo.trim() || `Recuerdo de ${memoryData.autor}`,
+    fecha: memoryData.fecha.trim() || '2026',
+    descripcion: memoryData.descripcion.trim() || `Momento especial compartido por ${memoryData.autor}`,
+    mensajeEmotivo: memoryData.mensajeEmotivo.trim() || '¡Wendy, eres luz y felicidad para nuestras vidas!',
+    imagenUrl: finalImageUrl || 'https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=1000&q=80',
+    colorCaja: memoryData.colorCaja || 'rosa',
+    icono: 'Sparkles',
+    abierto: false,
+    categoria: memoryData.autor ? `De: ${memoryData.autor}` : 'Recuerdo Especial',
+  };
+
+  const updatedMemories = [...existing, nuevoRecuerdo];
+  await saveLocalMemories(updatedMemories);
+
+  if (onProgress) onProgress(100);
+  return nuevoRecuerdo;
 };
 
 export const SUPABASE_SQL_SETUP = `
