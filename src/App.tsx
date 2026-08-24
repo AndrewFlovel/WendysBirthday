@@ -19,36 +19,30 @@ export const App: React.FC = () => {
 
   useEffect(() => {
     const initData = async () => {
-      // 1. Cargar recuerdos locales
+      // 1. Cargar recuerdos (limpiando cualquier dato mock anterior)
       const localRecuerdos = await getLocalMemories();
-      if (localRecuerdos && localRecuerdos.length > 0) {
-        setRecuerdos(localRecuerdos);
-      } else {
-        await saveLocalMemories(RECUERDOS_INICIALES);
+      const realRecuerdos = (localRecuerdos || []).filter(
+        (r) => !r.id.startsWith('recuerdo-') || r.id.startsWith('user-recuerdo-')
+      );
+      setRecuerdos(realRecuerdos);
+      if (localRecuerdos && localRecuerdos.length !== realRecuerdos.length) {
+        await saveLocalMemories(realRecuerdos);
       }
 
-      // 2. Cargar videos de amigos
+      // 2. Cargar videos de amigos reales
       try {
         const cloudVideos = await fetchAllVideoGreetings();
-        if (cloudVideos && cloudVideos.length > 0) {
-          const map = new Map<string, MensajeVideo>();
-          VIDEOS_PREDETERMINADOS.forEach((v) => map.set(v.id, v));
-          cloudVideos.forEach((v) => map.set(v.id, v));
-          setVideos(Array.from(map.values()));
-        }
+        const realVideos = (cloudVideos || []).filter((v) => !v.id.startsWith('vid-demo-'));
+        setVideos(realVideos);
       } catch (err) {
         console.warn('Error cargando videos:', err);
       }
 
-      // 3. Cargar deseos
+      // 3. Cargar deseos reales
       try {
         const cloudWishes = await fetchAllWishes();
-        if (cloudWishes && cloudWishes.length > 0) {
-          const map = new Map<string, DeseoCumple>();
-          DESEOS_PREDETERMINADOS.forEach((w) => map.set(w.id, w));
-          cloudWishes.forEach((w) => map.set(w.id, w));
-          setDeseos(Array.from(map.values()));
-        }
+        const realWishes = (cloudWishes || []).filter((w) => !w.id.startsWith('deseo-'));
+        setDeseos(realWishes);
       } catch (err) {
         console.warn('Error cargando deseos:', err);
       }

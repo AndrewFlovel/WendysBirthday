@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { X, Image, Sparkles, Save, RotateCcw, Check } from 'lucide-react';
+import { X, Image, Sparkles, Save, Plus, Trash2, Check } from 'lucide-react';
 import { Recuerdo } from '../types';
 import { saveLocalMemories } from '../services/localDb';
-import { RECUERDOS_INICIALES } from '../data/recuerdosIniciales';
 
 interface MemoryEditorModalProps {
   isOpen: boolean;
@@ -26,12 +25,44 @@ export const MemoryEditorModal: React.FC<MemoryEditorModalProps> = ({
   const current = editedList[selectedIndex];
 
   const handleChange = (field: keyof Recuerdo, value: string) => {
+    if (!current) return;
     const updated = [...editedList];
     updated[selectedIndex] = {
       ...updated[selectedIndex],
       [field]: value,
     };
     setEditedList(updated);
+  };
+
+  const handleAddNewGift = () => {
+    const newId = 'user-recuerdo-' + Date.now();
+    const colors: ('rosa' | 'celeste' | 'amarillo')[] = ['rosa', 'celeste', 'amarillo'];
+    const newGift: Recuerdo = {
+      id: newId,
+      order: editedList.length + 1,
+      titulo: `Recuerdo Mágico #${editedList.length + 1}`,
+      fecha: '2026',
+      descripcion: 'Escribe aquí la historia o momento de esta fotografía...',
+      mensajeEmotivo: '¡Wendy, eres una persona increíble y llena de luz!',
+      imagenUrl: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=1000&q=80',
+      colorCaja: colors[editedList.length % colors.length],
+      icono: 'Sparkles',
+      abierto: false,
+      categoria: 'Recuerdo Especial',
+    };
+    const updated = [...editedList, newGift];
+    setEditedList(updated);
+    setSelectedIndex(updated.length - 1);
+  };
+
+  const handleDeleteGift = (indexToDelete: number) => {
+    if (window.confirm(`¿Deseas eliminar el Regalo #${indexToDelete + 1}?`)) {
+      const updated = editedList.filter((_, i) => i !== indexToDelete);
+      // Re-ordenar
+      const reordered = updated.map((item, idx) => ({ ...item, order: idx + 1 }));
+      setEditedList(reordered);
+      setSelectedIndex(Math.max(0, indexToDelete - 1));
+    }
   };
 
   const handleImageFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,14 +88,6 @@ export const MemoryEditorModal: React.FC<MemoryEditorModalProps> = ({
     }, 1000);
   };
 
-  const handleResetDefaults = async () => {
-    if (window.confirm('¿Deseas restablecer los recuerdos y fotos predeterminados de Wendy?')) {
-      setEditedList(RECUERDOS_INICIALES);
-      await saveLocalMemories(RECUERDOS_INICIALES);
-      onSave(RECUERDOS_INICIALES);
-    }
-  };
-
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
       <div onClick={onClose} className="fixed inset-0 bg-black/80 backdrop-blur-md" />
@@ -78,10 +101,10 @@ export const MemoryEditorModal: React.FC<MemoryEditorModalProps> = ({
             </span>
             <div>
               <h3 className="text-base sm:text-lg font-bold font-display">
-                Personalizar Fotos y Recuerdos de Wendy
+                Administrar Cajas de Regalos y Fotos
               </h3>
               <p className="text-xs text-white/80">
-                Modifica las fotografías, fechas y dedicatorias de cada caja de regalo
+                Añade o modifica los recuerdos reales y fotografías para Wendy
               </p>
             </div>
           </div>
@@ -92,8 +115,8 @@ export const MemoryEditorModal: React.FC<MemoryEditorModalProps> = ({
         </div>
 
         <div className="p-5 sm:p-6 space-y-5 max-h-[75vh] overflow-y-auto">
-          {/* Selector de Caja / Regalo */}
-          <div className="flex flex-wrap gap-2 pb-2 border-b border-slate-800">
+          {/* Barra de pestañas / Regalos creados */}
+          <div className="flex flex-wrap items-center gap-2 pb-3 border-b border-slate-800">
             {editedList.map((r, idx) => (
               <button
                 key={r.id}
@@ -107,18 +130,29 @@ export const MemoryEditorModal: React.FC<MemoryEditorModalProps> = ({
                 Regalo #{idx + 1}
               </button>
             ))}
+
+            {/* Botón para añadir nuevo regalo */}
+            <button
+              onClick={handleAddNewGift}
+              className="flex items-center gap-1 px-3.5 py-1.5 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white shadow-md transition-all"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span>Añadir Regalo</span>
+            </button>
           </div>
 
-          {current && (
+          {/* Formulario del Regalo Seleccionado */}
+          {current ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              {/* Formulario */}
+              {/* Campos */}
               <div className="space-y-3 text-xs">
                 <div>
-                  <label className="block text-sky-200 font-semibold mb-1">Título del Recuerdo</label>
+                  <label className="block text-sky-200 font-semibold mb-1">Título del Momento</label>
                   <input
                     type="text"
                     value={current.titulo}
                     onChange={(e) => handleChange('titulo', e.target.value)}
+                    placeholder="Ej. Cumpleaños en la Playa"
                     className="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 focus:border-pink-400 text-white"
                   />
                 </div>
@@ -130,6 +164,7 @@ export const MemoryEditorModal: React.FC<MemoryEditorModalProps> = ({
                       type="text"
                       value={current.fecha}
                       onChange={(e) => handleChange('fecha', e.target.value)}
+                      placeholder="Ej. Julio 2026"
                       className="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 focus:border-pink-400 text-white"
                     />
                   </div>
@@ -149,27 +184,38 @@ export const MemoryEditorModal: React.FC<MemoryEditorModalProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-pink-200 font-semibold mb-1">Descripción de la Foto</label>
+                  <label className="block text-pink-200 font-semibold mb-1">Descripción / Historia</label>
                   <textarea
                     rows={2}
                     value={current.descripcion}
                     onChange={(e) => handleChange('descripcion', e.target.value)}
+                    placeholder="Cuenta qué pasó en ese momento..."
                     className="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 focus:border-pink-400 text-white resize-none"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-yellow-200 font-semibold mb-1">Dedicatoria Emotiva</label>
+                  <label className="block text-yellow-200 font-semibold mb-1">Dedicatoria para Wendy</label>
                   <textarea
                     rows={3}
                     value={current.mensajeEmotivo}
                     onChange={(e) => handleChange('mensajeEmotivo', e.target.value)}
+                    placeholder="Palabras de cariño y amor..."
                     className="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 focus:border-pink-400 text-white resize-none"
                   />
                 </div>
+
+                <button
+                  type="button"
+                  onClick={() => handleDeleteGift(selectedIndex)}
+                  className="flex items-center gap-1.5 text-xs text-red-400 hover:text-red-300 pt-1"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                  <span>Eliminar este regalo</span>
+                </button>
               </div>
 
-              {/* Vista Previa y Carga de Imagen */}
+              {/* Vista Previa y Foto */}
               <div className="space-y-3 flex flex-col justify-between">
                 <div>
                   <label className="block text-xs text-slate-300 font-semibold mb-1">
@@ -186,7 +232,7 @@ export const MemoryEditorModal: React.FC<MemoryEditorModalProps> = ({
 
                 <div className="space-y-2">
                   <label className="block text-[11px] text-slate-400">
-                    O pega el enlace directo de una foto (URL):
+                    Pega el enlace directo de una foto (URL):
                   </label>
                   <input
                     type="url"
@@ -196,7 +242,7 @@ export const MemoryEditorModal: React.FC<MemoryEditorModalProps> = ({
                     className="w-full px-3 py-1.5 text-xs rounded-xl bg-slate-800 border border-slate-700 text-white"
                   />
 
-                  <label className="flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold cursor-pointer border border-slate-700 transition-all text-sky-200">
+                  <label className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold cursor-pointer border border-slate-700 transition-all text-sky-200">
                     <Image className="w-4 h-4" />
                     <span>Subir Foto desde tu Computadora</span>
                     <input
@@ -209,43 +255,50 @@ export const MemoryEditorModal: React.FC<MemoryEditorModalProps> = ({
                 </div>
               </div>
             </div>
-          )}
-
-          {/* Botones de Guardar y Reset */}
-          <div className="flex items-center justify-between pt-4 border-t border-slate-800">
-            <button
-              onClick={handleResetDefaults}
-              className="flex items-center gap-1 text-xs text-rose-400 hover:text-rose-300"
-            >
-              <RotateCcw className="w-3.5 h-3.5" />
-              <span>Restablecer fotos originales</span>
-            </button>
-
-            <div className="flex gap-2">
+          ) : (
+            <div className="py-12 text-center space-y-4">
+              <span className="text-4xl">🎁</span>
+              <h4 className="text-base font-bold text-white">
+                No hay cajas de regalo creadas aún
+              </h4>
+              <p className="text-xs text-slate-400 max-w-sm mx-auto">
+                Haz clic en el botón a continuación para crear tu primera caja de regalo con fotos y dedicatorias para Wendy.
+              </p>
               <button
-                onClick={onClose}
-                className="px-4 py-2 rounded-xl glass-panel text-xs text-slate-300 hover:text-white"
+                onClick={handleAddNewGift}
+                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-pink-500 to-yellow-400 text-white font-bold text-xs shadow-lg hover:scale-105 transition-all inline-flex items-center gap-1.5"
               >
-                Cancelar
-              </button>
-
-              <button
-                onClick={handleSaveAll}
-                className="flex items-center gap-2 px-6 py-2 rounded-xl font-bold text-xs bg-gradient-to-r from-pink-500 to-amber-400 hover:from-pink-600 hover:to-amber-500 text-white shadow-lg transition-all"
-              >
-                {saveSuccess ? (
-                  <>
-                    <Check className="w-4 h-4 text-white" />
-                    <span>¡Guardado!</span>
-                  </>
-                ) : (
-                  <>
-                    <Save className="w-4 h-4" />
-                    <span>Guardar Cambios ✨</span>
-                  </>
-                )}
+                <Plus className="w-4 h-4" />
+                <span>Crear Primer Regalo</span>
               </button>
             </div>
+          )}
+
+          {/* Botones Inferiores */}
+          <div className="flex items-center justify-end gap-2 pt-4 border-t border-slate-800">
+            <button
+              onClick={onClose}
+              className="px-4 py-2 rounded-xl glass-panel text-xs text-slate-300 hover:text-white"
+            >
+              Cancelar
+            </button>
+
+            <button
+              onClick={handleSaveAll}
+              className="flex items-center gap-2 px-6 py-2 rounded-xl font-bold text-xs bg-gradient-to-r from-pink-500 to-amber-400 hover:from-pink-600 hover:to-amber-500 text-white shadow-lg transition-all"
+            >
+              {saveSuccess ? (
+                <>
+                  <Check className="w-4 h-4 text-white" />
+                  <span>¡Guardado!</span>
+                </>
+              ) : (
+                <>
+                  <Save className="w-4 h-4" />
+                  <span>Guardar Recuerdos ✨</span>
+                </>
+              )}
+            </button>
           </div>
         </div>
       </div>

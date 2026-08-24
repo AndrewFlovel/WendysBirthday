@@ -1,12 +1,13 @@
 import React from 'react';
 import { GiftBox } from './GiftBox';
 import { Recuerdo } from '../types';
-import { Sparkles, HeartHandshake, Film } from 'lucide-react';
+import { Sparkles, Film, Gift, Plus } from 'lucide-react';
 
 interface GiftGridProps {
   recuerdos: Recuerdo[];
   onOpenGift: (recuerdo: Recuerdo) => void;
   onOpenMontage: () => void;
+  onOpenMemoryEditor?: () => void;
   allOpened: boolean;
 }
 
@@ -14,6 +15,7 @@ export const GiftGrid: React.FC<GiftGridProps> = ({
   recuerdos,
   onOpenGift,
   onOpenMontage,
+  onOpenMemoryEditor,
   allOpened,
 }) => {
   const openedCount = recuerdos.filter((r) => r.abierto).length;
@@ -32,11 +34,11 @@ export const GiftGrid: React.FC<GiftGridProps> = ({
         </h2>
 
         <p className="text-sm sm:text-base text-slate-300 max-w-xl mx-auto">
-          Cada caja guarda un instante único del año que pasó. Pasa el cursor y haz clic sobre ellas para destapar tus fotografías y dedicatorias especiales.
+          Cada caja guarda un instante único del año. Pasa el cursor y haz clic sobre ellas para destapar tus fotografías y dedicatorias especiales.
         </p>
 
         {/* Mensaje de desbloqueo del Gran Montaje Final */}
-        {allOpened ? (
+        {allOpened && recuerdos.length > 0 ? (
           <div className="mt-4 inline-flex items-center gap-2 p-3 px-6 rounded-2xl bg-gradient-to-r from-pink-500/30 via-yellow-400/20 to-sky-400/30 border border-yellow-300/50 shadow-xl animate-bounce">
             <span className="text-xl">🎉</span>
             <span className="text-sm font-semibold text-yellow-200">
@@ -49,24 +51,47 @@ export const GiftGrid: React.FC<GiftGridProps> = ({
               <Film className="w-3 h-3" /> Ver Montaje
             </button>
           </div>
-        ) : (
+        ) : recuerdos.length > 0 ? (
           <div className="mt-3 text-xs text-sky-200/80 font-medium">
             💡 Abre los {recuerdos.length - openedCount} regalos restantes para descubrir el Gran Homenaje Final.
           </div>
-        )}
+        ) : null}
       </div>
 
-      {/* Cuadrícula de Cajas */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 justify-items-center">
-        {recuerdos.map((recuerdo, index) => (
-          <GiftBox
-            key={recuerdo.id}
-            recuerdo={recuerdo}
-            index={index}
-            onOpen={onOpenGift}
-          />
-        ))}
-      </div>
+      {/* Cuadrícula de Cajas o Estado Vacío */}
+      {recuerdos.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 justify-items-center">
+          {recuerdos.map((recuerdo, index) => (
+            <GiftBox
+              key={recuerdo.id}
+              recuerdo={recuerdo}
+              index={index}
+              onOpen={onOpenGift}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="max-w-xl mx-auto p-8 rounded-3xl glass-panel border border-pink-400/40 text-center space-y-4 shadow-2xl">
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-pink-500 to-yellow-400 flex items-center justify-center mx-auto shadow-lg">
+            <Gift className="w-8 h-8 text-white" />
+          </div>
+          <h3 className="text-lg sm:text-xl font-bold text-white font-display">
+            Aún no hay cajas de regalo configuradas
+          </h3>
+          <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+            Puedes añadir fotografías reales, fechas y dedicatorias personalizadas para Wendy usando el botón de administración.
+          </p>
+          {onOpenMemoryEditor && (
+            <button
+              onClick={onOpenMemoryEditor}
+              className="px-6 py-3 rounded-2xl font-bold text-xs sm:text-sm bg-gradient-to-r from-pink-500 to-yellow-400 text-white shadow-xl hover:scale-105 transition-all inline-flex items-center gap-2"
+            >
+              <Plus className="w-4 h-4" />
+              <span>Añadir Fotos y Recuerdos de Wendy ✨</span>
+            </button>
+          )}
+        </div>
+      )}
     </section>
   );
 };

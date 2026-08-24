@@ -146,6 +146,7 @@ export const HomePage: React.FC<HomePageProps> = ({
           recuerdos={recuerdos}
           onOpenGift={handleOpenGift}
           onOpenMontage={() => setIsMontageOpen(true)}
+          onOpenMemoryEditor={() => setIsMemoryEditorOpen(true)}
           allOpened={allOpened}
         />
 

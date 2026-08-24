@@ -178,32 +178,46 @@ export const WishingWell: React.FC<WishingWellProps> = ({ deseos, onAddWish }) =
           </form>
         </div>
 
-        {/* Lista de deseos publicados */}
-        <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-[520px] overflow-y-auto pr-1">
-          {deseos.map((item) => (
-            <div
-              key={item.id}
-              className={`p-5 rounded-2xl border backdrop-blur-md shadow-lg transition-transform hover:-translate-y-1 ${
-                item.colorFondo || 'bg-pink-900/30 border-pink-400/50 text-pink-100'
-              }`}
-            >
-              <div className="flex items-start justify-between gap-2 mb-2">
-                <span className="text-2xl">{item.sticker || '💖'}</span>
-                <span className="text-[10px] uppercase font-semibold px-2 py-0.5 rounded-full bg-white/15 text-white/90">
-                  {item.parentesco || 'Amigo/a'}
-                </span>
-              </div>
+        {/* Lista de deseos publicados o estado vacío */}
+        <div className="lg:col-span-7 max-h-[520px] overflow-y-auto pr-1">
+          {deseos.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {deseos.map((item) => (
+                <div
+                  key={item.id}
+                  className={`p-5 rounded-2xl border backdrop-blur-md shadow-lg transition-transform hover:-translate-y-1 ${
+                    item.colorFondo || 'bg-pink-900/30 border-pink-400/50 text-pink-100'
+                  }`}
+                >
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <span className="text-2xl">{item.sticker || '💖'}</span>
+                    <span className="text-[10px] uppercase font-semibold px-2 py-0.5 rounded-full bg-white/15 text-white/90">
+                      {item.parentesco || 'Amigo/a'}
+                    </span>
+                  </div>
 
-              <p className="text-sm font-medium text-white/90 leading-relaxed italic mb-3">
-                "{item.mensaje}"
-              </p>
+                  <p className="text-sm font-medium text-white/90 leading-relaxed italic mb-3">
+                    "{item.mensaje}"
+                  </p>
 
-              <div className="pt-2 border-t border-white/10 flex items-center justify-between text-xs text-white/70">
-                <strong className="text-yellow-300 font-bold">{item.nombre}</strong>
-                <span>{item.fecha}</span>
-              </div>
+                  <div className="pt-2 border-t border-white/10 flex items-center justify-between text-xs text-white/70">
+                    <strong className="text-yellow-300 font-bold">{item.nombre}</strong>
+                    <span>{item.fecha}</span>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
+          ) : (
+            <div className="p-8 sm:p-12 rounded-3xl glass-panel border border-yellow-400/30 text-center space-y-3 shadow-xl h-full flex flex-col items-center justify-center">
+              <span className="text-4xl">💌✨</span>
+              <h4 className="text-base font-bold text-white font-display">
+                El Pozo de los Deseos está esperando tu firma
+              </h4>
+              <p className="text-xs sm:text-sm text-slate-300 max-w-sm mx-auto leading-relaxed">
+                Aún no se han escrito deseos. Completa el formulario de la izquierda para dedicarle las primeras palabras de cariño a Wendy.
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </section>
