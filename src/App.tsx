@@ -96,8 +96,6 @@ export const App: React.FC = () => {
             path="/amigos&familia"
             element={
               <FriendsPage
-                videos={videos}
-                deseos={deseos}
                 onVideoUploaded={handleVideoUploaded}
                 onAddWish={handleAddWish}
                 isMusicPlaying={isMusicPlaying}
@@ -110,8 +108,6 @@ export const App: React.FC = () => {
             path="/amigos%26familia"
             element={
               <FriendsPage
-                videos={videos}
-                deseos={deseos}
                 onVideoUploaded={handleVideoUploaded}
                 onAddWish={handleAddWish}
                 isMusicPlaying={isMusicPlaying}
@@ -124,8 +120,6 @@ export const App: React.FC = () => {
             path="/amigos-y-familia"
             element={
               <FriendsPage
-                videos={videos}
-                deseos={deseos}
                 onVideoUploaded={handleVideoUploaded}
                 onAddWish={handleAddWish}
                 isMusicPlaying={isMusicPlaying}
@@ -138,8 +132,6 @@ export const App: React.FC = () => {
             path="/amigos"
             element={
               <FriendsPage
-                videos={videos}
-                deseos={deseos}
                 onVideoUploaded={handleVideoUploaded}
                 onAddWish={handleAddWish}
                 isMusicPlaying={isMusicPlaying}
@@ -152,8 +144,6 @@ export const App: React.FC = () => {
             path="/familia"
             element={
               <FriendsPage
-                videos={videos}
-                deseos={deseos}
                 onVideoUploaded={handleVideoUploaded}
                 onAddWish={handleAddWish}
                 isMusicPlaying={isMusicPlaying}
