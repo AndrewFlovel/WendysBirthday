@@ -15,9 +15,7 @@ import {
   VolumeX,
   Image as ImageIcon,
   Gift,
-  Heart,
-  MessageCircleHeart,
-  ArrowRight
+  MessageCircleHeart
 } from 'lucide-react';
 import { MensajeVideo, DeseoCumple, Recuerdo } from '../types';
 import {
@@ -333,9 +331,9 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
   };
 
   return (
-    <div className="min-h-screen py-3 px-3 sm:py-6 sm:px-4 max-w-4xl mx-auto flex flex-col justify-between">
+    <div className="min-h-screen py-2 px-3 sm:py-4 sm:px-4 max-w-3xl mx-auto flex flex-col justify-start">
       {/* Barra superior limpia y compacta */}
-      <header className="flex items-center justify-between gap-2 pb-3 sm:pb-4 border-b border-slate-800/80">
+      <header className="flex items-center justify-between gap-2 pb-2 sm:pb-3 border-b border-slate-800/80 mb-2 sm:mb-3">
         <div className="flex items-center gap-1.5">
           <PartyPopper className="w-4 h-4 text-yellow-300 animate-bounce" />
           <span className="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-sky-200">
@@ -371,36 +369,43 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
       </header>
 
       {/* Contenedor Central */}
-      <main className="my-3 sm:my-6 space-y-4 sm:space-y-6">
+      <main className="space-y-3 sm:space-y-4">
         {!isSubmitted ? (
           <>
-            {/* Encabezado Principal */}
-            <div className="text-center max-w-xl mx-auto space-y-1.5">
-              <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-pink-500/20 border border-pink-400/40 text-pink-200 text-[11px] sm:text-xs font-semibold">
+            {/* Encabezado Principal 100% Centrado y Simétrico */}
+            <div className="text-center max-w-lg mx-auto space-y-1">
+              <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-pink-500/20 border border-pink-400/40 text-pink-200 text-[11px] sm:text-xs font-semibold mx-auto">
                 <Sparkles className="w-3.5 h-3.5 text-yellow-300 animate-spin" style={{ animationDuration: '4s' }} />
                 <span>🤫 ¡Misión Sorpresa Confidencial!</span>
               </div>
 
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-white leading-tight">
-                Deja tu Regalo para{' '}
-                <span className="glow-wendy-name block sm:inline">Sussan Wendy</span> 🎂✨
+              <h1 className="text-center font-display font-bold text-white">
+                <span className="text-xs sm:text-sm font-normal text-slate-300 block">
+                  Deja tu regalo de cumpleaños para
+                </span>
+                <span className="glow-wendy-name text-3xl sm:text-4xl md:text-5xl block my-0.5 tracking-wide text-center">
+                  Sussan Wendy
+                </span>
+                <span className="text-[11px] sm:text-xs text-yellow-300 font-semibold tracking-wider block">
+                  🎂✨ Molina Guzman ✨🎂
+                </span>
               </h1>
 
-              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-md mx-auto">
-                Todo se mantendrá en secreto hasta el día de su fiesta. Elige cómo deseas felicitarla a continuación:
+              <p className="text-[11px] sm:text-xs text-slate-300/90 leading-snug max-w-sm mx-auto text-center pt-0.5">
+                Todo se mantendrá en secreto hasta el día de su fiesta.
               </p>
             </div>
 
             {/* ================= PASO 1: SELECTOR DE TIPO DE REGALO (TARJETAS GRANDES DESTACADAS) ================= */}
-            <div className="space-y-2">
-              <div className="flex items-center justify-between px-1">
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-center sm:justify-start px-1">
                 <span className="text-xs font-bold uppercase tracking-wider text-yellow-300 flex items-center gap-1.5">
                   <span className="w-5 h-5 rounded-full bg-yellow-400 text-slate-950 flex items-center justify-center text-[11px] font-black">1</span>
                   <span>Elige el tipo de felicitación que deseas dejar:</span>
                 </span>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-2.5">
                 {/* 1. Opción Video Saludo */}
                 <button
                   type="button"
@@ -408,28 +413,28 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
                     setTipoContribucion('video');
                     stopCamera();
                   }}
-                  className={`p-3.5 sm:p-4 rounded-2xl text-left transition-all duration-300 relative border-2 flex flex-col justify-between ${
+                  className={`p-3 rounded-2xl text-left transition-all duration-300 relative border-2 flex flex-col justify-between ${
                     tipoContribucion === 'video'
-                      ? 'bg-gradient-to-br from-sky-900/60 to-cyan-900/40 border-sky-400 shadow-xl shadow-sky-500/20 scale-[1.02] ring-2 ring-sky-300/50'
+                      ? 'bg-gradient-to-br from-sky-900/70 to-cyan-900/50 border-sky-400 shadow-lg shadow-sky-500/20 scale-[1.01] ring-2 ring-sky-300/40'
                       : 'bg-slate-900/80 border-slate-800 hover:border-slate-700 hover:bg-slate-800/60'
                   }`}
                 >
-                  <div className="flex items-start justify-between gap-2 mb-2">
-                    <div className={`p-2.5 rounded-xl ${tipoContribucion === 'video' ? 'bg-sky-500 text-white shadow-md' : 'bg-slate-800 text-sky-400'}`}>
-                      <Video className="w-5 h-5" />
+                  <div className="flex items-start justify-between gap-2 mb-1.5">
+                    <div className={`p-2 rounded-xl ${tipoContribucion === 'video' ? 'bg-sky-500 text-white shadow-md' : 'bg-slate-800 text-sky-400'}`}>
+                      <Video className="w-4 h-4" />
                     </div>
                     <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-sky-500/20 text-sky-200 border border-sky-400/30">
                       Video 🎥
                     </span>
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-white mb-0.5">Video Saludo</h3>
+                    <h3 className="text-xs sm:text-sm font-bold text-white mb-0.5">Video Saludo</h3>
                     <p className="text-[11px] text-slate-300 leading-tight">
                       Sube un archivo o grábate en vivo con tu cámara.
                     </p>
                   </div>
                   {tipoContribucion === 'video' && (
-                    <div className="mt-2 flex items-center gap-1 text-[11px] font-bold text-sky-300">
+                    <div className="mt-1.5 flex items-center gap-1 text-[11px] font-bold text-sky-300">
                       <CheckCircle2 className="w-3.5 h-3.5" />
                       <span>Seleccionado</span>
                     </div>
@@ -443,28 +448,28 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
                     setTipoContribucion('momento');
                     stopCamera();
                   }}
-                  className={`p-3.5 sm:p-4 rounded-2xl text-left transition-all duration-300 relative border-2 flex flex-col justify-between ${
+                  className={`p-3 rounded-2xl text-left transition-all duration-300 relative border-2 flex flex-col justify-between ${
                     tipoContribucion === 'momento'
-                      ? 'bg-gradient-to-br from-pink-900/60 to-rose-900/40 border-pink-400 shadow-xl shadow-pink-500/20 scale-[1.02] ring-2 ring-pink-300/50'
+                      ? 'bg-gradient-to-br from-pink-900/70 to-rose-900/50 border-pink-400 shadow-lg shadow-pink-500/20 scale-[1.01] ring-2 ring-pink-300/40'
                       : 'bg-slate-900/80 border-slate-800 hover:border-slate-700 hover:bg-slate-800/60'
                   }`}
                 >
-                  <div className="flex items-start justify-between gap-2 mb-2">
-                    <div className={`p-2.5 rounded-xl ${tipoContribucion === 'momento' ? 'bg-pink-500 text-white shadow-md' : 'bg-slate-800 text-pink-400'}`}>
-                      <Gift className="w-5 h-5" />
+                  <div className="flex items-start justify-between gap-2 mb-1.5">
+                    <div className={`p-2 rounded-xl ${tipoContribucion === 'momento' ? 'bg-pink-500 text-white shadow-md' : 'bg-slate-800 text-pink-400'}`}>
+                      <Gift className="w-4 h-4" />
                     </div>
                     <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-pink-500/20 text-pink-200 border border-pink-400/30">
                       Caja de Regalo 🎁
                     </span>
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-white mb-0.5">Momento / Foto</h3>
+                    <h3 className="text-xs sm:text-sm font-bold text-white mb-0.5">Momento / Foto</h3>
                     <p className="text-[11px] text-slate-300 leading-tight">
                       Sube una fotografía y crea una caja mágica para Wendy.
                     </p>
                   </div>
                   {tipoContribucion === 'momento' && (
-                    <div className="mt-2 flex items-center gap-1 text-[11px] font-bold text-pink-300">
+                    <div className="mt-1.5 flex items-center gap-1 text-[11px] font-bold text-pink-300">
                       <CheckCircle2 className="w-3.5 h-3.5" />
                       <span>Seleccionado</span>
                     </div>
@@ -478,28 +483,28 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
                     setTipoContribucion('dedicatoria');
                     stopCamera();
                   }}
-                  className={`p-3.5 sm:p-4 rounded-2xl text-left transition-all duration-300 relative border-2 flex flex-col justify-between ${
+                  className={`p-3 rounded-2xl text-left transition-all duration-300 relative border-2 flex flex-col justify-between ${
                     tipoContribucion === 'dedicatoria'
-                      ? 'bg-gradient-to-br from-yellow-900/60 to-amber-900/40 border-yellow-400 shadow-xl shadow-yellow-500/20 scale-[1.02] ring-2 ring-yellow-300/50'
+                      ? 'bg-gradient-to-br from-yellow-900/70 to-amber-900/50 border-yellow-400 shadow-lg shadow-yellow-500/20 scale-[1.01] ring-2 ring-yellow-300/40'
                       : 'bg-slate-900/80 border-slate-800 hover:border-slate-700 hover:bg-slate-800/60'
                   }`}
                 >
-                  <div className="flex items-start justify-between gap-2 mb-2">
-                    <div className={`p-2.5 rounded-xl ${tipoContribucion === 'dedicatoria' ? 'bg-yellow-400 text-slate-950 shadow-md' : 'bg-slate-800 text-yellow-400'}`}>
-                      <MessageCircleHeart className="w-5 h-5" />
+                  <div className="flex items-start justify-between gap-2 mb-1.5">
+                    <div className={`p-2 rounded-xl ${tipoContribucion === 'dedicatoria' ? 'bg-yellow-400 text-slate-950 shadow-md' : 'bg-slate-800 text-yellow-400'}`}>
+                      <MessageCircleHeart className="w-4 h-4" />
                     </div>
                     <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-yellow-500/20 text-yellow-200 border border-yellow-400/30">
                       Pozo de Deseos ✨
                     </span>
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-white mb-0.5">Dedicatoria Escrita</h3>
+                    <h3 className="text-xs sm:text-sm font-bold text-white mb-0.5">Dedicatoria Escrita</h3>
                     <p className="text-[11px] text-slate-300 leading-tight">
                       Dedica hermosas palabras con stickers decorativos.
                     </p>
                   </div>
                   {tipoContribucion === 'dedicatoria' && (
-                    <div className="mt-2 flex items-center gap-1 text-[11px] font-bold text-yellow-300">
+                    <div className="mt-1.5 flex items-center gap-1 text-[11px] font-bold text-yellow-300">
                       <CheckCircle2 className="w-3.5 h-3.5" />
                       <span>Seleccionado</span>
                     </div>
@@ -509,8 +514,8 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
             </div>
 
             {/* ================= PASO 2: FORMULARIO DINÁMICO ================= */}
-            <div className="space-y-2">
-              <div className="flex items-center justify-between px-1">
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-center sm:justify-start px-1">
                 <span className="text-xs font-bold uppercase tracking-wider text-yellow-300 flex items-center gap-1.5">
                   <span className="w-5 h-5 rounded-full bg-yellow-400 text-slate-950 flex items-center justify-center text-[11px] font-black">2</span>
                   <span>
@@ -521,20 +526,20 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
                 </span>
               </div>
 
-              <div className="glass-panel rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-sky-400/40 shadow-xl relative overflow-hidden">
+              <div className="glass-panel rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-sky-400/40 shadow-xl relative overflow-hidden">
                 <div className="absolute -top-10 -right-10 w-32 h-32 bg-pink-500/15 rounded-full blur-2xl pointer-events-none" />
                 <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-yellow-400/15 rounded-full blur-2xl pointer-events-none" />
 
-                <form onSubmit={handleSubmit} className="space-y-3.5 sm:space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-3.5">
                   {errorMsg && (
-                    <div className="flex items-center gap-2 p-2.5 rounded-xl bg-red-500/20 border border-red-500/50 text-red-200 text-xs">
+                    <div className="flex items-center gap-2 p-2 rounded-xl bg-red-500/20 border border-red-500/50 text-red-200 text-xs">
                       <AlertCircle className="w-4 h-4 shrink-0" />
                       <span>{errorMsg}</span>
                     </div>
                   )}
 
                   {/* Campos Comunes: Nombre y Parentesco */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                     <div>
                       <label className="block text-xs font-bold text-sky-200 mb-1">
                         Tu Nombre Completo <span className="text-pink-400">*</span>
@@ -545,7 +550,7 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
                         value={autor}
                         onChange={(e) => setAutor(e.target.value)}
                         placeholder="Ej. Sofía Mendoza"
-                        className="w-full px-3.5 py-2.5 text-base sm:text-sm rounded-xl bg-slate-800/90 border border-slate-700 focus:border-sky-400 focus:outline-none text-white placeholder-slate-500 shadow-inner"
+                        className="w-full px-3 py-2 text-base sm:text-sm rounded-xl bg-slate-800/90 border border-slate-700 focus:border-sky-400 focus:outline-none text-white placeholder-slate-500 shadow-inner"
                       />
                     </div>
 
@@ -556,7 +561,7 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
                       <select
                         value={parentesco}
                         onChange={(e) => setParentesco(e.target.value)}
-                        className="w-full px-3.5 py-2.5 text-base sm:text-sm rounded-xl bg-slate-800/90 border border-slate-700 focus:border-sky-400 focus:outline-none text-white shadow-inner"
+                        className="w-full px-3 py-2 text-base sm:text-sm rounded-xl bg-slate-800/90 border border-slate-700 focus:border-sky-400 focus:outline-none text-white shadow-inner"
                       >
                         {parentescoOptions.map((opt) => (
                           <option key={opt} value={opt}>
@@ -579,7 +584,7 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
                           value={mensaje}
                           onChange={(e) => setMensaje(e.target.value)}
                           placeholder="¡Wendy hermosa, te deseo el mejor cumpleaños del mundo!..."
-                          className="w-full px-3.5 py-2 text-base sm:text-sm rounded-xl bg-slate-800/90 border border-slate-700 focus:border-pink-400 focus:outline-none text-white placeholder-slate-500 resize-none shadow-inner"
+                          className="w-full px-3 py-1.5 text-base sm:text-sm rounded-xl bg-slate-800/90 border border-slate-700 focus:border-pink-400 focus:outline-none text-white placeholder-slate-500 resize-none shadow-inner"
                         />
                       </div>
 
@@ -588,7 +593,7 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
                         <button
                           type="button"
                           onClick={() => handleVideoTabChange('archivo')}
-                          className={`flex-1 py-2 px-2 text-xs font-semibold rounded-lg min-h-[40px] flex items-center justify-center gap-1.5 transition-all ${
+                          className={`flex-1 py-1.5 px-2 text-xs font-semibold rounded-lg min-h-[38px] flex items-center justify-center gap-1.5 transition-all ${
                             activeVideoTab === 'archivo'
                               ? 'bg-gradient-to-r from-sky-500 to-cyan-500 text-white shadow-md'
                               : 'text-slate-400 hover:text-slate-200'
@@ -601,7 +606,7 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
                         <button
                           type="button"
                           onClick={() => handleVideoTabChange('grabar')}
-                          className={`flex-1 py-2 px-2 text-xs font-semibold rounded-lg min-h-[40px] flex items-center justify-center gap-1.5 transition-all ${
+                          className={`flex-1 py-1.5 px-2 text-xs font-semibold rounded-lg min-h-[38px] flex items-center justify-center gap-1.5 transition-all ${
                             activeVideoTab === 'grabar'
                               ? 'bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-md'
                               : 'text-slate-400 hover:text-slate-200'
@@ -613,12 +618,12 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
                       </div>
 
                       {/* Área de Grabación o Subida */}
-                      <div className="rounded-xl border border-dashed border-slate-700 p-3 sm:p-4 bg-slate-950/60 text-center">
+                      <div className="rounded-xl border border-dashed border-slate-700 p-3 bg-slate-950/60 text-center">
                         {activeVideoTab === 'archivo' && (
                           <div>
                             {!videoPreviewUrl ? (
-                              <label className="flex flex-col items-center justify-center cursor-pointer py-4 group">
-                                <Upload className="w-8 h-8 text-sky-400 group-hover:scale-110 transition-transform mb-1.5" />
+                              <label className="flex flex-col items-center justify-center cursor-pointer py-3 group">
+                                <Upload className="w-7 h-7 text-sky-400 group-hover:scale-110 transition-transform mb-1" />
                                 <span className="text-xs sm:text-sm font-bold text-slate-200">
                                   Toca aquí para seleccionar tu video
                                 </span>
@@ -637,7 +642,7 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
                                 <video
                                   src={videoPreviewUrl}
                                   controls
-                                  className="w-full max-h-48 sm:max-h-56 rounded-xl bg-black mx-auto shadow-md"
+                                  className="w-full max-h-44 sm:max-h-52 rounded-xl bg-black mx-auto shadow-md"
                                 />
                                 <button
                                   type="button"
@@ -657,14 +662,14 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
                         {activeVideoTab === 'grabar' && (
                           <div>
                             {!videoPreviewUrl ? (
-                              <div className="space-y-3">
-                                <div className="relative w-full max-h-48 sm:max-h-56 rounded-xl bg-black overflow-hidden mx-auto flex items-center justify-center shadow-lg">
+                              <div className="space-y-2.5">
+                                <div className="relative w-full max-h-44 sm:max-h-52 rounded-xl bg-black overflow-hidden mx-auto flex items-center justify-center shadow-lg">
                                   <video
                                     ref={liveVideoRef}
                                     autoPlay
                                     muted
                                     playsInline
-                                    className="w-full h-44 sm:h-52 object-cover"
+                                    className="w-full h-40 sm:h-48 object-cover"
                                   />
                                   {isRecording && (
                                     <div className="absolute top-2 right-2 flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-red-600 text-white text-[11px] font-bold animate-pulse shadow-md">
@@ -679,7 +684,7 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
                                   <button
                                     type="button"
                                     onClick={startRecording}
-                                    className="flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm font-bold shadow-lg transition-all min-h-[44px]"
+                                    className="flex items-center gap-1.5 px-5 py-2 rounded-full bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm font-bold shadow-lg transition-all min-h-[40px]"
                                   >
                                     <Camera className="w-4 h-4" />
                                     <span>Iniciar Grabación</span>
@@ -688,7 +693,7 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
                                   <button
                                     type="button"
                                     onClick={stopRecording}
-                                    className="flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-slate-100 hover:bg-white text-slate-900 text-xs sm:text-sm font-bold shadow-lg transition-all animate-pulse min-h-[44px]"
+                                    className="flex items-center gap-1.5 px-5 py-2 rounded-full bg-slate-100 hover:bg-white text-slate-900 text-xs sm:text-sm font-bold shadow-lg transition-all animate-pulse min-h-[40px]"
                                   >
                                     <StopCircle className="w-4 h-4 text-red-600" />
                                     <span>Detener ({recordingTime}s)</span>
@@ -701,7 +706,7 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
                               <video
                                 src={videoPreviewUrl}
                                 controls
-                                className="w-full max-h-48 sm:max-h-56 rounded-xl bg-black mx-auto shadow-md"
+                                className="w-full max-h-44 sm:max-h-52 rounded-xl bg-black mx-auto shadow-md"
                               />
                               <button
                                 type="button"
@@ -725,18 +730,18 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
 
                 {/* ================= FORMULARIO 2: MOMENTO / FOTO ================= */}
                 {tipoContribucion === 'momento' && (
-                  <div className="space-y-3">
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                  <div className="space-y-2.5">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                       <div className="sm:col-span-2">
                         <label className="block text-xs font-bold text-pink-200 mb-1">
-                          Título del Momento o Aventura <span className="text-pink-400">*</span>
+                          Título del Momento <span className="text-pink-400">*</span>
                         </label>
                         <input
                           type="text"
                           required
                           value={tituloMomento}
                           onChange={(e) => setTituloMomento(e.target.value)}
-                          placeholder="Ej. Tarde de Café y Risas en el Centro"
+                          placeholder="Ej. Tarde de Café y Risas"
                           className="w-full px-3 py-2 text-base sm:text-sm rounded-xl bg-slate-800 border border-slate-700 text-white focus:border-pink-400"
                         />
                       </div>
@@ -763,35 +768,35 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
                         <button
                           type="button"
                           onClick={() => setColorCaja('rosa')}
-                          className={`py-2 px-2 rounded-xl text-xs font-bold border transition-all ${
+                          className={`py-1.5 px-2 rounded-xl text-xs font-bold border transition-all ${
                             colorCaja === 'rosa'
                               ? 'bg-pink-600 border-pink-300 text-white shadow-md ring-2 ring-pink-300'
                               : 'bg-slate-800 border-slate-700 text-slate-300'
                           }`}
                         >
-                          🌸 Rosa Pastel
+                          🌸 Rosa
                         </button>
                         <button
                           type="button"
                           onClick={() => setColorCaja('celeste')}
-                          className={`py-2 px-2 rounded-xl text-xs font-bold border transition-all ${
+                          className={`py-1.5 px-2 rounded-xl text-xs font-bold border transition-all ${
                             colorCaja === 'celeste'
                               ? 'bg-sky-600 border-sky-300 text-white shadow-md ring-2 ring-sky-300'
                               : 'bg-slate-800 border-slate-700 text-slate-300'
                           }`}
                         >
-                          💎 Celeste Cielo
+                          💎 Celeste
                         </button>
                         <button
                           type="button"
                           onClick={() => setColorCaja('amarillo')}
-                          className={`py-2 px-2 rounded-xl text-xs font-bold border transition-all ${
+                          className={`py-1.5 px-2 rounded-xl text-xs font-bold border transition-all ${
                             colorCaja === 'amarillo'
                               ? 'bg-amber-500 border-yellow-300 text-slate-950 shadow-md ring-2 ring-yellow-300'
                               : 'bg-slate-800 border-slate-700 text-slate-300'
                           }`}
                         >
-                          ⭐ Amarillo Sol
+                          ⭐ Amarillo
                         </button>
                       </div>
                     </div>
@@ -805,18 +810,18 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
                         value={mensaje}
                         onChange={(e) => setMensaje(e.target.value)}
                         placeholder="Cuenta la anécdota o lo mucho que significa esta foto para ti..."
-                        className="w-full px-3.5 py-2 text-base sm:text-sm rounded-xl bg-slate-800/90 border border-slate-700 focus:border-pink-400 text-white resize-none"
+                        className="w-full px-3 py-1.5 text-base sm:text-sm rounded-xl bg-slate-800/90 border border-slate-700 focus:border-pink-400 text-white resize-none"
                       />
                     </div>
 
                     {/* Subida de Fotografía */}
-                    <div className="rounded-xl border border-dashed border-slate-700 p-3.5 bg-slate-950/60 text-center space-y-2.5">
+                    <div className="rounded-xl border border-dashed border-slate-700 p-2.5 bg-slate-950/60 text-center space-y-2">
                       {fotoPreviewUrl ? (
-                        <div className="space-y-2">
+                        <div className="space-y-1.5">
                           <img
                             src={fotoPreviewUrl}
                             alt="Vista previa"
-                            className="max-h-48 rounded-xl object-contain mx-auto shadow-md"
+                            className="max-h-40 rounded-xl object-contain mx-auto shadow-md"
                           />
                           <button
                             type="button"
@@ -830,13 +835,13 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
                           </button>
                         </div>
                       ) : (
-                        <label className="flex flex-col items-center justify-center cursor-pointer py-4 group">
-                          <ImageIcon className="w-8 h-8 text-pink-400 group-hover:scale-110 transition-transform mb-1" />
+                        <label className="flex flex-col items-center justify-center cursor-pointer py-3 group">
+                          <ImageIcon className="w-7 h-7 text-pink-400 group-hover:scale-110 transition-transform mb-1" />
                           <span className="text-xs sm:text-sm font-bold text-slate-200">
                             Toca aquí para seleccionar una Fotografía
                           </span>
                           <span className="text-[11px] text-slate-400 mt-0.5">
-                            Formatos: JPG, PNG, WEBP desde tu celular o computadora
+                            Formatos: JPG, PNG, WEBP
                           </span>
                           <input
                             type="file"
@@ -852,7 +857,7 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
 
                 {/* ================= FORMULARIO 3: SOLO DEDICATORIA ================= */}
                 {tipoContribucion === 'dedicatoria' && (
-                  <div className="space-y-3">
+                  <div className="space-y-2.5">
                     <div>
                       <label className="block text-xs font-bold text-yellow-200 mb-1">
                         Tu Dedicatoria o Deseo de Cumpleaños <span className="text-pink-400">*</span>
@@ -863,7 +868,7 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
                         value={mensaje}
                         onChange={(e) => setMensaje(e.target.value)}
                         placeholder="¡Wendy hermosa, te deseo un año lleno de éxitos, felicidad y mucho amor!..."
-                        className="w-full px-3.5 py-2 text-base sm:text-sm rounded-xl bg-slate-800/90 border border-slate-700 focus:border-yellow-400 text-white resize-none shadow-inner"
+                        className="w-full px-3 py-2 text-base sm:text-sm rounded-xl bg-slate-800/90 border border-slate-700 focus:border-yellow-400 text-white resize-none shadow-inner"
                       />
                     </div>
 
@@ -872,13 +877,13 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
                       <label className="block text-xs font-semibold text-yellow-200 mb-1">
                         Elige un Sticker Decorativo
                       </label>
-                      <div className="flex flex-wrap gap-1.5">
+                      <div className="flex flex-wrap gap-1">
                         {STICKERS.map((stk) => (
                           <button
                             key={stk}
                             type="button"
                             onClick={() => setSelectedSticker(stk)}
-                            className={`w-8 h-8 sm:w-9 sm:h-9 rounded-lg text-base sm:text-lg flex items-center justify-center transition-all ${
+                            className={`w-8 h-8 sm:w-8 sm:h-8 rounded-lg text-base flex items-center justify-center transition-all ${
                               selectedSticker === stk
                                 ? 'bg-yellow-400 scale-110 shadow-md ring-2 ring-yellow-200'
                                 : 'bg-white/10 hover:bg-white/20'
@@ -901,7 +906,7 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
                             key={tema.name}
                             type="button"
                             onClick={() => setSelectedTemaIndex(i)}
-                            className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${
+                            className={`px-2.5 py-1 rounded-lg text-xs font-medium border transition-all ${
                               selectedTemaIndex === i
                                 ? 'border-white bg-white/20 text-white font-bold'
                                 : 'border-slate-700 text-slate-400'
@@ -917,7 +922,7 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
 
                 {/* Barra de progreso durante la subida */}
                 {isUploading && (
-                  <div className="space-y-1.5 p-2.5 rounded-xl bg-slate-950/60 border border-slate-800">
+                  <div className="space-y-1 p-2 rounded-xl bg-slate-950/60 border border-slate-800">
                     <div className="flex justify-between text-xs text-sky-200 font-semibold">
                       <span>Guardando tu sorpresa para Wendy...</span>
                       <span>{uploadProgress}%</span>
@@ -935,7 +940,7 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
                 <button
                   type="submit"
                   disabled={isUploading}
-                  className="w-full py-3 sm:py-3.5 rounded-xl min-h-[48px] font-bold text-sm sm:text-base bg-gradient-to-r from-sky-500 via-pink-500 to-yellow-400 hover:from-sky-600 hover:via-pink-600 hover:to-yellow-500 text-white shadow-lg shadow-pink-500/25 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:scale-100"
+                  className="w-full py-2.5 sm:py-3 rounded-xl min-h-[44px] font-bold text-sm sm:text-base bg-gradient-to-r from-sky-500 via-pink-500 to-yellow-400 hover:from-sky-600 hover:via-pink-600 hover:to-yellow-500 text-white shadow-lg shadow-pink-500/25 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:scale-100"
                 >
                   <Sparkles className="w-4 h-4 text-yellow-300" />
                   <span>
@@ -954,19 +959,19 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
         </>
         ) : (
           /* Pantalla de Agradecimiento y Confirmación Dinámica */
-          <div className="max-w-md mx-auto glass-panel rounded-2xl sm:rounded-3xl p-6 sm:p-8 border border-pink-400/50 shadow-xl text-center space-y-4">
-            <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-pink-500 via-yellow-400 to-sky-400 flex items-center justify-center mx-auto shadow-lg animate-bounce">
-              <CheckCircle2 className="w-8 h-8 text-slate-950" />
+          <div className="max-w-md mx-auto glass-panel rounded-2xl sm:rounded-3xl p-5 sm:p-7 border border-pink-400/50 shadow-xl text-center space-y-3.5 my-4">
+            <div className="w-14 h-14 rounded-full bg-gradient-to-tr from-pink-500 via-yellow-400 to-sky-400 flex items-center justify-center mx-auto shadow-lg animate-bounce">
+              <CheckCircle2 className="w-7 h-7 text-slate-950" />
             </div>
 
-            <div className="space-y-1.5">
+            <div className="space-y-1">
               <span className="text-[11px] uppercase tracking-wider font-bold text-yellow-300">
                 ¡Sorpresa Guardada con Éxito!
               </span>
               <h2 className="text-xl sm:text-2xl font-display font-bold text-white">
                 ¡Muchas Gracias, {autor}! 💖✨
               </h2>
-              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-sm mx-auto">
+              <p className="text-xs text-slate-300 leading-relaxed max-w-sm mx-auto">
                 {submittedType === 'video' &&
                   'Tu video de felicitación y saludo se ha guardado con éxito. Se revelará en la celebración de Wendy.'}
                 {submittedType === 'momento' &&
@@ -977,10 +982,10 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
             </div>
 
             {/* Acciones tras enviar */}
-            <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-2">
+            <div className="pt-1 flex flex-col sm:flex-row items-center justify-center gap-2">
               <button
                 onClick={handleCopyShareLink}
-                className="w-full sm:w-auto px-4 py-2.5 rounded-xl font-bold text-xs bg-gradient-to-r from-pink-500 to-sky-500 text-white shadow-md hover:scale-105 transition-all flex items-center justify-center gap-1.5 min-h-[44px]"
+                className="w-full sm:w-auto px-4 py-2 rounded-xl font-bold text-xs bg-gradient-to-r from-pink-500 to-sky-500 text-white shadow-md hover:scale-105 transition-all flex items-center justify-center gap-1.5 min-h-[40px]"
               >
                 {copiedLink ? <Check className="w-3.5 h-3.5 text-emerald-300" /> : <Share2 className="w-3.5 h-3.5" />}
                 <span>{copiedLink ? '¡Enlace Copiado!' : 'Invitar a más amigos 📲'}</span>
@@ -988,7 +993,7 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
 
               <button
                 onClick={handleResetForAnother}
-                className="w-full sm:w-auto px-4 py-2.5 rounded-xl font-semibold text-xs glass-panel hover:bg-white/20 text-slate-200 transition-all min-h-[44px]"
+                className="w-full sm:w-auto px-4 py-2 rounded-xl font-semibold text-xs glass-panel hover:bg-white/20 text-slate-200 transition-all min-h-[40px]"
               >
                 Enviar otra sorpresa
               </button>
@@ -998,7 +1003,7 @@ export const FriendsPage: React.FC<FriendsPageProps> = ({
       </main>
 
       {/* Pie de página limpio y compacto */}
-      <footer className="text-center text-[11px] text-slate-500 pt-3">
+      <footer className="text-center text-[11px] text-slate-500 pt-3 pb-2">
         Homenaje especial para <strong className="text-pink-300">Sussan Wendy Molina Guzman</strong> ✨
       </footer>
     </div>
